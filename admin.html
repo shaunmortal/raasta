@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <title>Raasta · Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Hind:wght@400;600&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap"
+    />
+    <style>
+      :root {
+        --bg: #ecf0f6;
+        --card: #fff;
+        --ink: #0f1b2d;
+        --ink-2: #46566c;
+        --line: #d8e0eb;
+        --primary: #1557e6;
+        --soft: #e3ebfd;
+        --chg: #fff4d6;
+        --danger: #c9342a;
+        --ok: #11734f;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #0f1419;
+          --card: #171d26;
+          --ink: #e8edf5;
+          --ink-2: #9aa6b8;
+          --line: #2a3443;
+          --primary: #7aa2ff;
+          --soft: #1b2a4a;
+          --chg: #3a3216;
+        }
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font:
+          15px/1.5 Hind,
+          -apple-system,
+          'Segoe UI',
+          sans-serif;
+      }
+      header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 16px;
+        background: var(--card);
+        border-bottom: 1px solid var(--line);
+        position: sticky;
+        top: 0;
+        z-index: 2;
+      }
+      header h1 {
+        font-size: 18px;
+        margin: 0;
+        flex: 1;
+      }
+      main {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 16px;
+      }
+      .card {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 16px;
+        margin-bottom: 14px;
+      }
+      h2 {
+        font-size: 16px;
+        margin: 0 0 8px;
+      }
+      .mut {
+        color: var(--ink-2);
+        font-size: 13px;
+        margin: 0 0 10px;
+      }
+      input,
+      textarea {
+        font: inherit;
+        color: inherit;
+        background: transparent;
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        padding: 5px 8px;
+        width: 100%;
+      }
+      input.chg,
+      textarea.chg {
+        background: var(--chg);
+      }
+      button {
+        font: inherit;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 7px 14px;
+        background: var(--card);
+        color: var(--ink);
+        cursor: pointer;
+      }
+      button.primary {
+        background: var(--primary);
+        border-color: var(--primary);
+        color: #fff;
+        font-weight: 600;
+      }
+      .row {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+      .grid2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+      .login {
+        max-width: 380px;
+        margin: 40px auto;
+      }
+      .err {
+        color: var(--danger);
+      }
+      .ok {
+        color: var(--ok);
+      }
+      .tbl {
+        overflow: auto;
+      }
+      table {
+        border-collapse: collapse;
+        width: 100%;
+        min-width: 980px;
+      }
+      th,
+      td {
+        text-align: left;
+        padding: 4px;
+        border-bottom: 1px solid var(--line);
+        vertical-align: middle;
+      }
+      th {
+        font-size: 12px;
+        color: var(--ink-2);
+        background: var(--soft);
+        position: sticky;
+        top: 0;
+      }
+      td.fl {
+        font-size: 12px;
+        color: var(--ink-2);
+        white-space: nowrap;
+      }
+      td.code input {
+        width: 80px;
+      }
+      @media (max-width: 640px) {
+        .grid2 {
+          grid-template-columns: 1fr;
+        }
+      }
+      td.ph { white-space: nowrap; }
+      td.ph img { width: 96px; height: 54px; object-fit: cover; border-radius: 6px; vertical-align: middle; margin-right: 6px; }
+      td.ph .phbtn { display: inline-grid; place-items: center; width: 40px; height: 40px; border-radius: 8px; border: 1px solid #cbd5e1; cursor: pointer; font-size: 18px; vertical-align: middle; }
+      td.ph.busy .phbtn { opacity: 0.4; pointer-events: none; }
+      /* Soft 3D skin, same as the app (src/ui/soft.css). */
+      :root {
+        --bg: #e8eefa;
+        --card: #f4f7fe;
+        --ink: #0e1a3a;
+        --ink-2: #45537a;
+        --line: #d3ddf1;
+        --primary: #0a66ff;
+        --soft: #cfe0ff;
+        --grad: linear-gradient(95deg, #00c3ff 0%, #0a86ff 50%, #0050ff 100%);
+        --glow: 0 14px 30px -8px rgb(0 104 255 / 0.55), 0 0 22px -6px rgb(0 180 255 / 0.45);
+        --out: 6px 6px 14px rgb(146 166 210 / 0.45), -6px -6px 14px rgb(255 255 255 / 0.95);
+        --in: inset 4px 4px 10px rgb(146 166 210 / 0.38), inset -4px -4px 10px rgb(255 255 255 / 0.9);
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #080d24;
+          --card: #111a3e;
+          --ink: #f2f5ff;
+          --ink-2: #aab4d9;
+          --line: rgb(128 140 255 / 0.2);
+          --primary: #4d8dff;
+          --soft: rgb(77 141 255 / 0.18);
+          --grad: linear-gradient(95deg, #00d4ff 0%, #2f86ff 50%, #6a4dff 100%);
+          --out: 0 12px 30px -12px rgb(0 0 0 / 0.6), inset 0 1px 0 rgb(255 255 255 / 0.05);
+          --in: inset 0 2px 10px rgb(0 0 0 / 0.45);
+        }
+      }
+      body {
+        font-family: 'Plus Jakarta Sans', Hind, -apple-system, 'Segoe UI', sans-serif;
+        background-image:
+          radial-gradient(1200px 700px at 10% -10%, rgb(255 255 255 / 0.6) 0%, transparent 60%),
+          linear-gradient(165deg, transparent 0%, rgb(0 0 0 / 0.03) 100%);
+        background-attachment: fixed;
+      }
+      header {
+        margin: 12px;
+        border: 0;
+        border-radius: 20px;
+        box-shadow: var(--out);
+      }
+      .card {
+        border: 0;
+        border-radius: 22px;
+        box-shadow: var(--out);
+      }
+      input,
+      textarea {
+        border-color: transparent;
+        box-shadow: var(--in);
+        border-radius: 12px;
+      }
+      button.primary {
+        background: var(--grad);
+        border: 0;
+        box-shadow: var(--glow);
+        border-radius: 12px;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1 id="title"></h1>
+      <a id="openApp" href="/app/" target="_blank"></a>
+      <button id="lang" type="button"></button>
+    </header>
+    <main id="main"></main>
+    <script type="module" src="/src/admin.ts"></script>
+  </body>
+</html>
