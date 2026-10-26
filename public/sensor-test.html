@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <title>Raasta · Sensor test</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 16px;
+        font: 16px/1.5 -apple-system, 'Segoe UI', sans-serif;
+        background: #ecf0f6;
+        color: #0f1b2d;
+      }
+      .row {
+        background: #fff;
+        border-radius: 10px;
+        padding: 10px 14px;
+        margin: 8px 0;
+      }
+      b.ok {
+        color: #11734f;
+      }
+      b.bad {
+        color: #c9342a;
+      }
+      button {
+        font: inherit;
+        font-weight: 600;
+        padding: 12px 18px;
+        border: 0;
+        border-radius: 10px;
+        background: #1557e6;
+        color: #fff;
+        width: 100%;
+      }
+      small {
+        color: #46566c;
+        word-break: break-all;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Raasta sensor test</h2>
+    <p>Tap Start, then walk a few steps holding the phone. Send a screenshot of this page.</p>
+    <button id="go" type="button">Start</button>
+    <div id="out"></div>
+    <script>
+      // Shows which motion APIs this phone/browser actually delivers (for the step counter in step-by-step mode).
+      const S = { motion: 0, grav: 0, lin: 0, orient: 0, alpha: 0, a: '', o: '', perm: '…' };
+      const yes = (v) => `<b class="${v ? 'ok' : 'bad'}">${v ? 'YES' : 'NO'}</b>`;
+      function show() {
+        document.getElementById('out').innerHTML = `
+          <div class="row">Motion events: ${yes(S.motion)} (${S.motion})<br><small>${S.a}</small></div>
+          <div class="row">With gravity: ${yes(S.grav)} · Without gravity: ${yes(S.lin)}</div>
+          <div class="row">Direction (gyro): ${yes(S.alpha)} (${S.orient} events)<br><small>${S.o}</small></div>
+          <div class="row">Chrome motion-sensor permission: <b>${S.perm}</b></div>
+          <div class="row"><small>${navigator.userAgent}</small></div>`;
+      }
+      const f = (v) => (v == null ? '-' : v.toFixed(1));
+      function onMotion(e) {
+        S.motion++;
+        const g = e.accelerationIncludingGravity,
+          l = e.acceleration;
+        if (g && g.x != null) S.grav++;
+        if (l && l.x != null) S.lin++;
+        S.a = `g ${f(g && g.x)}, ${f(g && g.y)}, ${f(g && g.z)} · a ${f(l && l.x)}, ${f(l && l.y)}, ${f(l && l.z)}`;
+      }
+      function onOrient(e) {
+        S.orient++;
+        if (e.alpha != null) S.alpha++;
+        S.o = `alpha ${f(e.alpha)} · beta ${f(e.beta)} · gamma ${f(e.gamma)}`;
+      }
+      document.getElementById('go').onclick = async () => {
+        try {
+          if (window.DeviceMotionEvent && DeviceMotionEvent.requestPermission) await DeviceMotionEvent.requestPermission();
+          if (window.DeviceOrientationEvent && DeviceOrientationEvent.requestPermission) await DeviceOrientationEvent.requestPermission();
+        } catch (e) {
+          S.perm = 'error: ' + e;
+        }
+        try {
+          S.perm = (await navigator.permissions.query({ name: 'accelerometer' })).state;
+        } catch {
+          S.perm = 'unknown (not Chrome)';
+        }
+        if (!window.DeviceMotionEvent) S.a = 'This browser has no DeviceMotionEvent';
+        addEventListener('devicemotion', onMotion);
+        addEventListener('deviceorientation', onOrient);
+        setInterval(show, 300);
+      };
+      show();
+    </script>
+  </body>
+</html>
