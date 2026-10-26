@@ -1,0 +1,17 @@
+node_modules/
+dist/
+.env
+.vercel/
+__pycache__/
+*.log
+reference/raasta-prototype.html
+.vercel
+.data/
+.env*
+!.env.example
+.DS_Store
+CLAUDE.md
+SPEC.md
+reference/
+docs/ideathon/
+docs/screenshots/
